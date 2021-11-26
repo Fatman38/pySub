@@ -83,16 +83,11 @@ for sheet in xl.sheet_names:
 	print (df)
 	if (df['Key'].dtypes != int):
 		df['Key'] = df['Key'].astype(np.int64)
-
-	newindex = df[df.columns[0]]
-	print(newindex)
-	df2 = df
-	df2 = df2.set_index(newindex)
+	
+	df2 = df.groupby(['Key'],as_index=False).agg(lambda x : '\n'.join(x))
 	print(df2)
 	print()
 	print()
-	
 	for column in df2:
 		if column != 'Key':
-			createSubtitleFile(sdf, df[['Key', column]], column, sheet)
-		
+			createSubtitleFile(sdf, df2[['Key', column]], column, sheet)
